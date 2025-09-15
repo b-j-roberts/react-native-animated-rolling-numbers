@@ -1,5 +1,5 @@
 export const NUMBER_ARRAY = new Array(10).fill(0);
-export const COMPACT_NOTATIONS = ["K", "M", "B", "T"];
+export const COMPACT_NOTATIONS = ["K", "M", "B", "T", "P", "E"];
 export const DIGIT_VARIANTS: {
   [key: string]: "dot" | "comma" | "sign" | "number" | "compact";
 } = {
@@ -21,4 +21,6 @@ export const DIGIT_VARIANTS: {
   M: "compact",
   B: "compact",
   T: "compact",
+  P: "compact",
+  E: "compact",
 };

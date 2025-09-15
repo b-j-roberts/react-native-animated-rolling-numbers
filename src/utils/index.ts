@@ -17,7 +17,40 @@ export function formatCompactNumber(
   locales: Intl.LocalesArgument = "en-US"
 ): string {
   const absValue = Math.abs(value);
-  if (absValue >= 1_000_000_000_000) {
+
+  // Scientific notation for sextillion and above (10^21 and higher)
+  if (absValue >= 1e21) {
+    const exponent = Math.floor(Math.log10(absValue));
+    const mantissa = value / Math.pow(10, exponent);
+
+    // Format mantissa to have up to 3 significant digits
+    const formattedMantissa = mantissa.toLocaleString(locales, {
+      maximumSignificantDigits: 3,
+      minimumSignificantDigits: 1,
+      useGrouping: false,
+    });
+
+    return `${formattedMantissa}e${exponent}`;
+  } else if (absValue >= 1e18) {
+    // Quintillion (E)
+    return (
+      (value / 1e18).toLocaleString(locales, {
+        maximumFractionDigits: fixedDecimal,
+        minimumFractionDigits: fixedDecimal,
+        useGrouping,
+      }) + "E"
+    );
+  } else if (absValue >= 1e15) {
+    // Quadrillion (P)
+    return (
+      (value / 1e15).toLocaleString(locales, {
+        maximumFractionDigits: fixedDecimal,
+        minimumFractionDigits: fixedDecimal,
+        useGrouping,
+      }) + "P"
+    );
+  } else if (absValue >= 1_000_000_000_000) {
+    // Trillion (T)
     return (
       (value / 1_000_000_000_000).toLocaleString(locales, {
         maximumFractionDigits: fixedDecimal,
@@ -26,6 +59,7 @@ export function formatCompactNumber(
       }) + "T"
     );
   } else if (absValue >= 1_000_000_000) {
+    // Billion (B)
     return (
       (value / 1_000_000_000).toLocaleString(locales, {
         maximumFractionDigits: fixedDecimal,
@@ -34,6 +68,7 @@ export function formatCompactNumber(
       }) + "B"
     );
   } else if (absValue >= 1_000_000) {
+    // Million (M)
     return (
       (value / 1_000_000).toLocaleString(locales, {
         maximumFractionDigits: fixedDecimal,
@@ -42,6 +77,7 @@ export function formatCompactNumber(
       }) + "M"
     );
   } else if (absValue >= 1_000) {
+    // Thousand (K)
     return (
       (value / 1_000).toLocaleString(locales, {
         maximumFractionDigits: fixedDecimal,
